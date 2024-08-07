@@ -76,7 +76,7 @@ net.Receive('simfphys_request_seatswitch', function(len, ply)
 		return
 	end
 
-	if ply:IsHandcuffed() then return end
+	if weapons.Get('weapon_handcuffed') and ply:IsHandcuffed() then return end
 
 	ply.NextSeatSwitch = ply.NextSeatSwitch or 0
 

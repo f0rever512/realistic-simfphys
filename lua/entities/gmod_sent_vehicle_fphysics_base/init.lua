@@ -837,7 +837,7 @@ function ENT:Use( ply )
 end
 
 function ENT:CanDrive( ply )
-	return not ply:IsHandcuffed() or ply:Team() == TEAM_ADMIN or false
+	return (weapons.Get('weapon_handcuffed') and ply:IsHandcuffed()) or true
 end
 
 function ENT:FindAvailableSeat(ply)
