@@ -1266,15 +1266,15 @@ function ENT:SetOnSmoke( bOn )
 end
 
 function ENT:SetMaxHealth( nHealth )
-	self:SetNWFloat( "MaxHealth", nHealth )
+	self:SetNetVar( "MaxHealth", nHealth )
 end
 
 function ENT:SetCurHealth( nHealth )
-	self:SetNWFloat( "MaxHealth", nHealth )
+	self:SetNetVar( "Health", nHealth )
 end
 
 function ENT:SetMaxFuel( nFuel )
-	self:SetNWFloat( "MaxFuel", nFuel )
+	self:SetNetVar( "MaxFuel", nFuel )
 end
 
 function ENT:SetFuel( nFuel )

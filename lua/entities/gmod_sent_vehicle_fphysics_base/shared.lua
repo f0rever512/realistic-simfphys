@@ -88,19 +88,19 @@ function VehicleMeta:IsVehicle()
 end
 
 function ENT:GetCurHealth()
-	return self:GetMaxHealth() -- return self:GetNetVar( "Health", self:GetMaxHealth() )
+	return self:GetNetVar( "Health", self:GetMaxHealth() )
 end
 
 function ENT:GetMaxHealth()
-	return self:GetNWFloat( "MaxHealth", 2000 )
+	return self:GetNetVar( "MaxHealth", 2000 )
 end
 
 function ENT:GetMaxFuel()
-	return self:GetNWFloat( "MaxFuel", 60 )
+	return self:GetNetVar( "MaxFuel", 60 )
 end
 
 function ENT:GetFuel()
-	return self.curFuel or self:GetNWFloat( "Fuel", self:GetMaxFuel() )
+	return self.curFuel or self:GetNetVar( "Fuel", self:GetMaxFuel() )
 end
 
 function ENT:GetFuelUse()
@@ -108,7 +108,7 @@ function ENT:GetFuelUse()
 end
 
 function ENT:GetFuelType()
-	return self:GetNWInt( "FuelType", 1 )
+	return self:GetNetVar( "FuelType", 1 )
 end
 
 function ENT:GetFuelPos()
@@ -116,19 +116,19 @@ function ENT:GetFuelPos()
 end
 
 function ENT:OnSmoke()
-	return self:GetNWBool( "OnSmoke", false )
+	return self:GetNetVar( "OnSmoke", false )
 end
 
 function ENT:OnFire()
-	return self:GetNWBool( "OnFire", false )
+	return self:GetNetVar( "OnFire", false )
 end
 
 function ENT:GetBackfireSound()
-	return self:GetNWString( "backfiresound" ) -- self:GetNetVar( "backfiresound", '' )
+	return self:GetNetVar( "backfiresound", '' )
 end
 
 function ENT:SetBackfireSound( the_sound )
-	self:SetNWString( "backfiresound", the_sound ) 
+	self:SetNetVar( "backfiresound", the_sound )
 end
 
 function ENT:BodyGroupIsValid( bodygroups )
