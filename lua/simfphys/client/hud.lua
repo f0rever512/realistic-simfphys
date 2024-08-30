@@ -3,10 +3,10 @@ local screenh = ScrH()
 local Widescreen = (screenw / screenh) > (4 / 3)
 local sizex = screenw * (Widescreen and 1 or 1.32)
 
-local turnmenu = KEY_COMMA
-local mirrorkey = KEY_M
-local beltkey = KEY_B
-local ms_key = MOUSE_MIDDLE
+local turnmenu = GetConVar('cl_simfphys_key_turnmenu'):GetInt()
+local mirrorkey = GetConVar('cl_simfphys_key_mirror'):GetInt()
+local beltkey = GetConVar('cl_simfphys_key_belt'):GetInt()
+local ms_key = GetConVar('cl_simfphys_keymousesteer'):GetInt()
 
 local ms_deadzone = 0.06
 local ms_sensitivity = 1
@@ -23,13 +23,6 @@ cvars.AddChangeCallback('dbg_cars_ms_deadzone', function(convar, oldValue, newVa
 cvars.AddChangeCallback('cl_simfphys_key_turnmenu', function(convar, oldValue, newValue) turnmenu = tonumber(newValue) end)
 cvars.AddChangeCallback('cl_simfphys_key_mirror', function(convar, oldValue, newValue) mirrorkey = tonumber(newValue) end)
 cvars.AddChangeCallback('cl_simfphys_key_belt', function(convar, oldValue, newValue) beltkey = tonumber(newValue) end)
-
-hook.Add('PlayerFinishedLoading', 'dbg-cars.hud', function()
-	turnmenu = GetConVar('cl_simfphys_key_turnmenu'):GetInt()
-	mirrorkey = GetConVar('cl_simfphys_key_mirror'):GetInt()
-	beltkey = GetConVar('cl_simfphys_key_belt'):GetInt()
-	ms_key = GetConVar('cl_simfphys_keymousesteer'):GetInt()
-end)
 
 ms_sensitivity = GetConVar('dbg_cars_ms_sensitivity'):GetFloat()
 ms_deadzone = GetConVar('dbg_cars_ms_deadzone'):GetFloat()
