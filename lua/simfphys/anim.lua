@@ -57,7 +57,9 @@ hook.Add("CalcMainActivity", "simfphysSeatActivityOverride", function(ply)
 end)
 
 if CLIENT then
+
 	hook.Add("UpdateAnimation", "simfphysPoseparameters", function(ply , vel, seq)
+
 		local vehicle = ply:GetVehicle()
 		if not IsValid( vehicle ) then return end
 
@@ -77,9 +79,11 @@ if CLIENT then
 		ply:SetPoseParameter("vehicle_steer", ply.steerSmoothed)
 		ply:InvalidateBoneCache()
 
---		GAMEMODE:GrabEarAnimation( ply )
+		GAMEMODE:GrabEarAnimation( ply )
  		GAMEMODE:MouthMoveAnimation( ply )
 
 		return true
+
 	end)
+
 end
