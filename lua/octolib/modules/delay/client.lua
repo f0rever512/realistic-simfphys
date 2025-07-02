@@ -51,10 +51,10 @@ hook.Add('dbg-view.chPaint', 'octolib.delay', function(tr, icon)
 	for id, data in pairs(delays) do
 		local segs = math.min(math.ceil((CurTime() - data.start) / data.time * 36), 36)
 		local text = data.text .. ('.'):rep(math.floor(CurTime() * 2 % 4))
-		draw.SimpleTextOutlined(text, 'octolib.use', 0 + 60, 0, Color(255, 255, 255, 200), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 2, Color(0, 0, 0, 200))
+		draw.SimpleTextOutlined(text, 'octolib.use', 0 + 60, 0, Color(255, 255, 255, 150), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 2, Color(0, 0, 0, 230))
 
 		draw.NoTexture()
-		surface.SetDrawColor(0, 0, 0, 200)
+		surface.SetDrawColor(0, 0, 0, 230)
 		surface.DrawPoly(p1)
 
 		surface.SetDrawColor(255,255,255, 150)
@@ -68,11 +68,16 @@ hook.Add('dbg-view.chPaint', 'octolib.delay', function(tr, icon)
 end)
 
 hook.Add('dbg-view.chOverride', 'octolib.delay', function(tr, icon)
+
 	local ply = LocalPlayer()
+	local veh = ply:GetVehicle()
+
 	if override and (not tr.Hit or tr.Fraction > 0.03) then
-		local aim = ply:GetAimVector()
+		local aim = ( IsValid(veh) and veh:LocalToWorldAngles(ply:EyeAngles()) or ply:EyeAngles() ):Forward()
+		
 		tr.HitPos = ply:GetShootPos() + aim * 60
 		tr.HitNormal = -aim
 		tr.Fraction = 0.03
 	end
+
 end)

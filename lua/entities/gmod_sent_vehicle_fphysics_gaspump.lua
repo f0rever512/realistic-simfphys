@@ -1,7 +1,7 @@
 AddCSLuaFile()
 
 ENT.Type	= 'anim'
-ENT.PrintName	= 'Бензин' --Gas station (petrol)
+ENT.PrintName	= 'Бензин' -- Gas station (petrol)
 ENT.Category	= 'simfphys'
 
 ENT.Spawnable = true
@@ -184,7 +184,9 @@ if CLIENT then
 		function(res)
 			local amount = tonumber(res)
 			if not amount or amount <= 0 then
-				octolib.notify.show('warning', 'L.incorrect_quantity')
+				notification.AddLegacy('Неверно введено количество', NOTIFY_ERROR, 4)
+				surface.PlaySound('buttons/lightswitch2.wav')
+				
 				return
 			end
 
@@ -203,22 +205,13 @@ if CLIENT then
 	return
 else
 	util.AddNetworkString('dbg.fuelPurchase')
-	net.Receive('dbg.fuelPurchase', function(len, ply)
+	net.Receive('dbg.fuelPurchase', function(_, ply)
 		local amount = net.ReadUInt(10)
 		local wep = ply:GetWeapon('weapon_simfillerpistol')
-		if IsValid(wep) then
-			local price = amount * simfphys.fuelPrices[wep:GetFuelType()]
-			if not ply:canAfford(price) then
-				ply:Notify('warning', 'L.not_enough_money')
-				return
-			end
 
-			ply:addMoney(-price)
-			-- ply:Notify(L.fuel_buy:format(amount, DarkRP.formatMoney(price)))
+		if IsValid(wep) then
 			ply.usedFuel = 0
 			ply.usedFuelMax = amount
-		else
-			ply:Notify('warning', 'L.how_you_do_this')
 		end
 	end)
 end

@@ -56,12 +56,12 @@ if SERVER then
 			simfphys.SetOwner( self.EntityOwner, self.WheelDust )
 		end)
 
-		self.snd_roll = "simulated_vehicles/sfx/concrete_roll.wav"
-		self.snd_roll_dirt = "simulated_vehicles/sfx/dirt_roll.wav"
+		self.snd_roll = 'simulated_vehicles/sfx/wheel_roll.wav'
+		self.snd_roll_dirt = 'simulated_vehicles/sfx/wheel_roll_dirt.wav'
 		self.snd_roll_grass = "simulated_vehicles/sfx/grass_roll.wav"
 
-		self.snd_skid = "simulated_vehicles/sfx/concrete_skid.wav"
-		self.snd_skid_dirt = "simulated_vehicles/sfx/dirt_skid.wav"
+		self.snd_skid = 'simulated_vehicles/sfx/wheel_skid.wav'
+		self.snd_skid_dirt = 'simulated_vehicles/sfx/wheel_skid_dirt.wav'
 		self.snd_skid_grass = "simulated_vehicles/sfx/grass_skid.wav"
 
 		self.RollSound = CreateSound(self, self.snd_roll)
