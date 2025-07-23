@@ -1,3 +1,47 @@
+local chPosOff, chAngOff = Vector(0, 0, 0), Angle(0, -90, 90)
+
+local function postDrawTranslucentRenderables()
+
+	local ply = LocalPlayer()
+
+    if ply:GetViewEntity() ~= ply then return end
+
+	local override = hook.Run('octolib.delay.chShouldDraw', ply)
+	if not override then return end
+
+	local veh = ply:GetVehicle()
+	local eyeAng = IsValid(veh) and veh:LocalToWorldAngles(ply:EyeAngles()) or ply:EyeAngles()
+
+	local aim = eyeAng:Forward()
+	local tr = hook.Run('octolib.delay.chTraceOverride')
+	if not tr then
+		local pos = ply:GetShootPos()
+		local endpos = pos + aim * 2000
+		tr = util.TraceLine({
+			start = pos,
+			endpos = endpos,
+			filter = function(ent)
+				return ent ~= ply and ent:GetRenderMode() ~= RENDERMODE_TRANSALPHA
+			end
+		})
+	end
+
+	local _icon, _alpha, _scale = hook.Run('octolib.delay.chOverride', tr)
+	-- local n = tr.Hit and tr.HitNormal or -aim
+	-- if math.abs(n.z) > 0.98 then
+	-- 	n:Add(-aim * 0.01)
+	-- end
+	local chPos, chAng = LocalToWorld(chPosOff, chAngOff, tr.HitPos or endpos, eyeAng)
+	cam.Start3D2D(chPos, chAng, math.pow(tr.Fraction, 0.5) * (_scale or 0.23))
+	cam.IgnoreZ(true)
+	if not hook.Run('octolib.delay.chPaint', tr, _icon) then return end
+	cam.IgnoreZ(false)
+	cam.End3D2D()
+
+end
+
+hook.Add('PostDrawTranslucentRenderables', 'octolib.delay', postDrawTranslucentRenderables)
+
 local delays = {}
 
 surface.CreateFont('octolib.use', {
@@ -39,14 +83,14 @@ for i = 1, 36 do
 end
 
 local override
-hook.Add('dbg-view.chShouldDraw', 'octolib.delay', function()
+hook.Add('octolib.delay.chShouldDraw', 'octolib.delay', function()
 
 	override = table.Count(delays) > 0
 	if override then return true end
 
 end)
 
-hook.Add('dbg-view.chPaint', 'octolib.delay', function(tr, icon)
+hook.Add('octolib.delay.chPaint', 'octolib.delay', function(tr, icon)
 
 	for id, data in pairs(delays) do
 		local segs = math.min(math.ceil((CurTime() - data.start) / data.time * 36), 36)
@@ -67,7 +111,7 @@ hook.Add('dbg-view.chPaint', 'octolib.delay', function(tr, icon)
 
 end)
 
-hook.Add('dbg-view.chOverride', 'octolib.delay', function(tr, icon)
+hook.Add('octolib.delay.chOverride', 'octolib.delay', function(tr, icon)
 
 	local ply = LocalPlayer()
 	local veh = ply:GetVehicle()
@@ -79,5 +123,16 @@ hook.Add('dbg-view.chOverride', 'octolib.delay', function(tr, icon)
 		tr.HitNormal = -aim
 		tr.Fraction = 0.03
 	end
+
+end)
+
+hook.Add('StartCommand', 'octolib.delay.blockKey', function(ply, cmd)
+
+	local wep = ply:GetActiveWeapon()
+	if not IsValid(wep) or not wep.AimPos then return end
+
+    if table.Count(delays) > 0 then
+        cmd:RemoveKey(IN_ATTACK2)
+    end
 
 end)
