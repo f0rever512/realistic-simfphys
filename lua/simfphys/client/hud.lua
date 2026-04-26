@@ -575,8 +575,11 @@ local function updateMirror(pos, angOff, veh, w, h)
 	local key = w .. '-' .. h
 	rts[key] = rts[key] or GetRenderTarget('dbg-cars-mirrorRT' .. key, w, h)
 
-	-- local oldHideHead = dbgView.headHidden
-	-- dbgView.hideHead(false)
+	local oldHideHead
+	if ifpTable then
+		oldHideHead = ifpTable.headHidden
+		ifpTable.hideHead(false)
+	end
 	-- ply:SetMaskVisible(true)
 	local oldRT = cmod:GetTexture('$fbtexture')
 	cmod:SetTexture('$fbtexture', rts[key])
@@ -592,7 +595,7 @@ local function updateMirror(pos, angOff, veh, w, h)
 	render.PopRenderTarget()
 	if not oldRT then return rts[key] end
 	cmod:SetTexture('$fbtexture', oldRT)
-	-- dbgView.hideHead(oldHideHead)
+	if ifpTable then ifpTable.hideHead(oldHideHead) end
 	-- ply:SetMaskVisible()
 	return rts[key]
 
